@@ -22,7 +22,7 @@
 }
 
 @media (max-width: 499px) {
-  .DesktopOnly {
+  .Toolbar_Nav {
     display: none;
   }
 }

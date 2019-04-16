@@ -4,7 +4,7 @@ import classes from './Logo.module.css';
 
 const Logo = props => (
   <div className={classes.Logo}>
-    <img src={logoImage} alt="My Burger" />
+    <img className={classes.Logo_img} src={logoImage} alt="My Burger" />
   </div>
 );
 
