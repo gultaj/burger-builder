@@ -2,12 +2,14 @@ import React from 'react';
 import Button from 'components/UI/Button/Button';
 
 const OrderSummary = props => {
-  const ingredientSummary = Object.keys(props.ingredients).map(type => (
-    <li key={type}>
-      <span style={{ textTransform: 'capitalize' }}>{type}: </span>
-      {props.ingredients[type]}
-    </li>
-  ));
+  const ingredientSummary =
+    props.ingredients &&
+    Object.keys(props.ingredients).map(type => (
+      <li key={type}>
+        <span style={{ textTransform: 'capitalize' }}>{type}: </span>
+        {props.ingredients[type]}
+      </li>
+    ));
   return (
     <React.Fragment>
       <h3>Your order</h3>

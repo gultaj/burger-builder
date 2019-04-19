@@ -11,7 +11,7 @@ const SideDrawer = () => {
   attachedClasses.push(context.show ? classes.Open : classes.Close);
   return (
     <React.Fragment>
-      <Backdrop />
+      <Backdrop show={context.show} closed={context.toggle} />
       <div className={attachedClasses.join(' ')}>
         <div className={classes.Logo}>
           <Logo />
