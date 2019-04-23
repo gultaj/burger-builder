@@ -6,6 +6,7 @@ import OrderSummary from 'components/OrderSummary/OrderSummary';
 import Spinner from 'components/UI/Spinner/Spinner';
 import withErrorHandler from 'hoc/withErrorHandler/withErrorHandler';
 import axios from 'axios-order';
+import queryString from 'query-string';
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -65,28 +66,13 @@ class BurgerBuilder extends Component {
     this.setState({ isPurchasing: false });
   };
   purchaseContinueHandler = () => {
-    this.setState({ loading: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Oleg Timoshenko',
-        address: {
-          street: 'Teststreet 1',
-          zipCode: '23130',
-          country: 'Belarus'
-        },
-        email: 'test@tut.by'
-      },
-      deliveryMethod: 'fast'
-    };
-    axios
-      .post('/orders.json', order)
-      .then(res => {})
-      .catch(error => {})
-      .then(() => {
-        this.setState({ loading: false, isPurchasing: false });
-      });
+    this.props.history.push({
+      pathname: '/checkout',
+      search: queryString.stringify({
+        ...this.state.ingredients,
+        price: this.state.totalPrice
+      })
+    });
   };
   render() {
     const disabledControls = { ...this.state.ingredients };

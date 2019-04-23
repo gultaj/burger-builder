@@ -5,13 +5,19 @@
 }
 
 .Burger {
-  width: 100%;
-  height: 300px;
+  width: 100% !important;
+  /* height: 300px; */
   margin: auto;
 }
 
-@media (min-width: 600px) {
+/* @media (min-width: 600px) {
   .Checkout {
     width: 500px;
+  }
+} */
+
+@media (min-height: 700px) and (min-width: 1000px) {
+  .Checkout {
+    width: 700px;
   }
 }
