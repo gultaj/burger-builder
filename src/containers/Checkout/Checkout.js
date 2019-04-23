@@ -6,19 +6,14 @@ import { parse } from 'query-string';
 
 class Checkout extends Component {
   state = {
-    ingredients: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0
-    },
+    ingredients: null,
     price: 0
   };
-  componentDidMount() {
+  componentWillMount() {
     const query = parse(this.props.location.search);
     const ingredients = {};
     for (let key in query) {
-      if (this.state.ingredients.hasOwnProperty(key)) {
+      if (key !== 'price') {
         ingredients[key] = query[key];
       }
     }
