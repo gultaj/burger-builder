@@ -12,7 +12,7 @@ const App = props => (
         <Switch>
           <Route path="/checkout" component={Checkout} />
           <Route path="/orders" component={Orders} />
-          <Route path="/" exact component={BurgerBuilder} />
+          <Route path="/" component={BurgerBuilder} />
         </Switch>
       </Layout>
     </div>

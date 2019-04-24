@@ -1,0 +1,28 @@
+.InputGroup {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.Input {
+  outline: none;
+  border: 1px solid #ccc;
+  background-color: white;
+  font: inherit;
+  padding: 5px 10px;
+  width: 100%;
+  display: block;
+  box-sizing: border-box;
+}
+
+.Input:focus {
+  outline: none;
+  background-color: #eee;
+}
+
+.Label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+  text-align: left;
+}
