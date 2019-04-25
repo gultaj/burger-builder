@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './Input.module.css';
 
 const Input = props => {
-  const Element = props.element;
+  const InputElement = props.element;
   let options = null;
   if (props.element === 'select') {
     options = props.config.options.map(option => (
@@ -11,23 +11,24 @@ const Input = props => {
       </option>
     ));
   }
-  const InputElement = (
-    <Element
-      className={classes.Input}
-      {...props.config}
-      value={props.value}
-      onChange={props.onChange}
-      name={props.name}
-    >
-      {options}
-    </Element>
-  );
+  const inputClasses = [classes.Input];
+  if (props.invalid) {
+    inputClasses.push(classes.Invalid);
+  }
   return (
     <div className={classes.InputGroup}>
       <label className={classes.Label}>
         {props.label && props.label + ':'}
       </label>
-      {InputElement}
+      <InputElement
+        className={inputClasses.join(' ')}
+        {...props.config}
+        value={props.value}
+        onChange={props.onChange}
+        name={props.name}
+      >
+        {options}
+      </InputElement>
     </div>
   );
 };

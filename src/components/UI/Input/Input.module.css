@@ -26,3 +26,8 @@
   margin-bottom: 8px;
   text-align: left;
 }
+
+.Invalid {
+  border: 1px solid red;
+  background-color: #fda49a;
+}

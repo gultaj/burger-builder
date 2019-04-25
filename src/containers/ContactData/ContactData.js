@@ -9,12 +9,30 @@ import config from './formConfig';
 class ContactData extends Component {
   state = {
     orderForm: null,
+    invalid: null,
     loading: false
   };
   componentWillMount() {
     const form = Object.fromEntries(Object.keys(config).map(key => [key, '']));
-    this.setState({ orderForm: form });
+    const invalid = Object.fromEntries(
+      Object.keys(config).map(key => [key, undefined])
+    );
+    this.setState({ orderForm: form, invalid });
   }
+  checkValidity = (value, rules) => {
+    if (!(rules instanceof Object)) return false;
+    let isInvalid = [];
+    if (rules.hasOwnProperty('required') && rules.required) {
+      isInvalid.push(value.trim() === '');
+    }
+    if (rules.hasOwnProperty('minLength')) {
+      isInvalid.push(value.length < rules.minLength);
+    }
+    if (rules.hasOwnProperty('maxLength')) {
+      isInvalid.push(value.length > rules.maxLength);
+    }
+    return isInvalid.some(rule => rule);
+  };
   orderHandler = event => {
     event.preventDefault();
     this.setState({ loading: true });
@@ -34,10 +52,15 @@ class ContactData extends Component {
       });
   };
   handleChange = event => {
+    const { name, value } = event.target;
     this.setState({
       orderForm: {
         ...this.state.orderForm,
-        [event.target.name]: event.target.value
+        [name]: value
+      },
+      invalid: {
+        ...this.state.invalid,
+        [name]: this.checkValidity(value, config[name].validation)
       }
     });
   };
@@ -48,6 +71,7 @@ class ContactData extends Component {
         config={config[key].config}
         value={this.state.orderForm[key]}
         label={config[key].label}
+        invalid={this.state.invalid[key]}
         key={key}
         name={key}
         onChange={this.handleChange}

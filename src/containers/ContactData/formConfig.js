@@ -5,6 +5,9 @@ const config = {
       type: 'text',
       placeholder: 'Enter your name'
     },
+    validation: {
+      required: true
+    },
     label: 'Name',
     value: ''
   },
@@ -13,6 +16,9 @@ const config = {
     config: {
       type: 'email',
       placeholder: 'Your email'
+    },
+    validation: {
+      required: true
     },
     label: 'Email',
     value: ''
@@ -23,6 +29,9 @@ const config = {
       type: 'text',
       placeholder: 'Street'
     },
+    validation: {
+      required: true
+    },
     label: 'Street',
     value: ''
   },
@@ -31,6 +40,11 @@ const config = {
     config: {
       type: 'text',
       placeholder: 'Postal code'
+    },
+    validation: {
+      required: true,
+      minLength: 5,
+      maxLength: 5
     },
     label: 'Postal code',
     value: ''
