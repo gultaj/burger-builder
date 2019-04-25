@@ -21,30 +21,22 @@ class ContactData extends Component {
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: {
-        name: 'Oleg Timoshenko',
-        address: {
-          street: 'Teststreet 1',
-          zipCode: '23130',
-          country: 'Belarus'
-        },
-        email: 'test@tut.by'
-      },
-      deliveryMethod: 'fast'
+      orderData: this.state.orderForm
     };
     axios
       .post('/orders.json', order)
       .then(res => {
+        this.setState({ loading: false });
         this.props.history.push('/');
       })
-      .catch(error => {})
-      .then(() => {
+      .catch(error => {
         this.setState({ loading: false });
       });
   };
   handleChange = event => {
     this.setState({
       orderForm: {
+        ...this.state.orderForm,
         [event.target.name]: event.target.value
       }
     });
@@ -67,11 +59,9 @@ class ContactData extends Component {
         {this.state.loading ? (
           <Spinner />
         ) : (
-          <form>
+          <form onSubmit={this.orderHandler}>
             {inputs}
-            <Button type="Success" clicked={this.orderHandler}>
-              ORDER
-            </Button>
+            <Button type="Success">ORDER</Button>
           </form>
         )}
       </div>

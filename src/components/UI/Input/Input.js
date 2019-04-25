@@ -3,34 +3,25 @@ import classes from './Input.module.css';
 
 const Input = props => {
   const Element = props.element;
-  let InputElement = (
+  let options = null;
+  if (props.element === 'select') {
+    options = props.config.options.map(option => (
+      <option key={option.value} value={option.value}>
+        {option.title}
+      </option>
+    ));
+  }
+  const InputElement = (
     <Element
       className={classes.Input}
       {...props.config}
       value={props.value}
       onChange={props.onChange}
       name={props.name}
-    />
+    >
+      {options}
+    </Element>
   );
-  if (props.element === 'select') {
-    const options = props.config.options.map(option => (
-      <option key={option.value} value={option.value}>
-        {option.title}
-      </option>
-    ));
-    InputElement = (
-      <Element
-        className={classes.Input}
-        {...props.config}
-        value={props.value}
-        onChange={props.onChange}
-        name={props.name}
-      >
-        {options}
-      </Element>
-    );
-  }
-
   return (
     <div className={classes.InputGroup}>
       <label className={classes.Label}>
