@@ -5,19 +5,21 @@ const Input = props => {
   const InputElement = props.element;
   let options = null;
   if (props.element === 'select') {
-    options = props.config.options.map(option => (
+    options = props.config.options.map((option, i) => (
       <option key={option.value} value={option.value}>
         {option.title}
       </option>
     ));
   }
   const inputClasses = [classes.Input];
+  const labelClasses = [classes.Label];
   if (props.invalid) {
     inputClasses.push(classes.Invalid);
+    labelClasses.push(classes.InvalidLabel);
   }
   return (
     <div className={classes.InputGroup}>
-      <label className={classes.Label}>
+      <label className={labelClasses.join(' ')}>
         {props.label && props.label + ':'}
       </label>
       <InputElement

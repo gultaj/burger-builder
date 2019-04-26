@@ -58,7 +58,7 @@ const config = {
       ]
     },
     label: 'Delivery method',
-    value: ''
+    value: 'fastest'
   }
 };
 

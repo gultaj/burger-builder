@@ -10,25 +10,30 @@ class ContactData extends Component {
   state = {
     orderForm: null,
     invalid: null,
-    loading: false
+    loading: false,
+    isInvalidForm: true
   };
   componentWillMount() {
-    const form = Object.fromEntries(Object.keys(config).map(key => [key, '']));
-    const invalid = Object.fromEntries(
-      Object.keys(config).map(key => [key, undefined])
+    const form = Object.fromEntries(
+      Object.keys(config).map(key => [key, config[key].value])
     );
-    this.setState({ orderForm: form, invalid });
+    const invalid = Object.fromEntries(
+      Object.keys(config)
+        .filter(key => Boolean(config[key].validation))
+        .map(key => [key, null])
+    );
+    this.setState({ orderForm: form, invalid: invalid });
   }
   checkValidity = (value, rules) => {
-    if (!(rules instanceof Object)) return false;
+    if (!(rules instanceof Object)) return;
     let isInvalid = [];
-    if (rules.hasOwnProperty('required') && rules.required) {
+    if (Boolean(rules.required)) {
       isInvalid.push(value.trim() === '');
     }
-    if (rules.hasOwnProperty('minLength')) {
+    if (Boolean(rules.minLength)) {
       isInvalid.push(value.length < rules.minLength);
     }
-    if (rules.hasOwnProperty('maxLength')) {
+    if (Boolean(rules.maxLength)) {
       isInvalid.push(value.length > rules.maxLength);
     }
     return isInvalid.some(rule => rule);
@@ -53,15 +58,19 @@ class ContactData extends Component {
   };
   handleChange = event => {
     const { name, value } = event.target;
+    const invalid = { ...this.state.invalid };
+    if (Boolean(config[name].validation)) {
+      invalid[name] = this.checkValidity(value, config[name].validation);
+    }
     this.setState({
       orderForm: {
         ...this.state.orderForm,
         [name]: value
       },
-      invalid: {
-        ...this.state.invalid,
-        [name]: this.checkValidity(value, config[name].validation)
-      }
+      isInvalidForm: Object.keys(invalid).some(
+        key => invalid[key] || invalid[key] === null
+      ),
+      invalid
     });
   };
   render() {
@@ -85,7 +94,9 @@ class ContactData extends Component {
         ) : (
           <form onSubmit={this.orderHandler}>
             {inputs}
-            <Button type="Success">ORDER</Button>
+            <Button type="Success" disabled={this.state.isInvalidForm}>
+              ORDER
+            </Button>
           </form>
         )}
       </div>
