@@ -2,23 +2,24 @@ import React, { Component } from 'react';
 import CheckoutSummary from 'components/Order/CheckoutSummary/CheckoutSummary';
 import { Route } from 'react-router-dom';
 import ContactData from 'containers/ContactData/ContactData';
-import { parse } from 'query-string';
+import { connect } from 'react-redux';
+// import { parse } from 'query-string';
 
 class Checkout extends Component {
-  state = {
-    ingredients: null,
-    price: 0
-  };
-  componentWillMount() {
-    const query = parse(this.props.location.search);
-    const ingredients = {};
-    for (let key in query) {
-      if (key !== 'price') {
-        ingredients[key] = query[key];
-      }
-    }
-    this.setState({ ingredients, price: Number(query.price).toFixed(2) });
-  }
+  // state = {
+  //   ingredients: null,
+  //   price: 0
+  // };
+  // componentWillMount() {
+  //   const query = parse(this.props.location.search);
+  //   const ingredients = {};
+  //   for (let key in query) {
+  //     if (key !== 'price') {
+  //       ingredients[key] = query[key];
+  //     }
+  //   }
+  //   this.setState({ ingredients, price: Number(query.price).toFixed(2) });
+  // }
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
   };
@@ -30,23 +31,22 @@ class Checkout extends Component {
     return (
       <div>
         <CheckoutSummary
-          ingredients={this.state.ingredients}
+          ingredients={this.props.ingredients}
           checkoutCancelled={this.checkoutCancelledHandler}
           checkoutContinued={this.checkoutContinuedHandler}
         />
         <Route
           path={this.props.match.path + '/contact-data'}
-          render={props => (
-            <ContactData
-              ingredients={this.state.ingredients}
-              price={this.state.price}
-              {...props}
-            />
-          )}
+          render={props => <ContactData {...props} />}
         />
       </div>
     );
   }
 }
 
-export default Checkout;
+const mapStateToProps = state => ({
+  ingredients: state.ingredients,
+  price: state.totalPrice
+});
+
+export default connect(mapStateToProps)(Checkout);

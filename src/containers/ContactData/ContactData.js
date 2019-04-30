@@ -5,6 +5,7 @@ import classes from './ContactData.module.css';
 import axios from 'axios-order';
 import Input from 'components/UI/Input/Input';
 import config from './formConfig';
+import { connect } from 'react-redux';
 
 class ContactData extends Component {
   state = {
@@ -104,4 +105,9 @@ class ContactData extends Component {
   }
 }
 
-export default ContactData;
+const mapStateToProps = state => ({
+  ingredients: state.ingredients,
+  price: state.totalPrice
+});
+
+export default connect(mapStateToProps)(ContactData);
