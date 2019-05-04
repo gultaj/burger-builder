@@ -6,12 +6,13 @@ import axios from 'axios-order';
 import Input from 'components/UI/Input/Input';
 import config from './formConfig';
 import { connect } from 'react-redux';
+import withErrorHandler from 'hoc/withErrorHandler/withErrorHandler';
+import * as orderActions from 'store/actions/order';
 
 class ContactData extends Component {
   state = {
     orderForm: null,
     invalid: null,
-    loading: false,
     isInvalidForm: true
   };
   componentWillMount() {
@@ -41,21 +42,12 @@ class ContactData extends Component {
   };
   orderHandler = event => {
     event.preventDefault();
-    this.setState({ loading: true });
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
       orderData: this.state.orderForm
     };
-    axios
-      .post('/orders.json', order)
-      .then(res => {
-        this.setState({ loading: false });
-        this.props.history.push('/');
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-      });
+    this.props.onSubmitOrder(order);
   };
   handleChange = event => {
     const { name, value } = event.target;
@@ -90,7 +82,7 @@ class ContactData extends Component {
     return (
       <div className={classes.ContactData}>
         <h4>Enter your contact data</h4>
-        {this.state.loading ? (
+        {this.props.loading ? (
           <Spinner />
         ) : (
           <form onSubmit={this.orderHandler}>
@@ -107,7 +99,15 @@ class ContactData extends Component {
 
 const mapStateToProps = state => ({
   ingredients: state.ingredients,
-  price: state.totalPrice
+  price: state.totalPrice,
+  loading: state.loading
 });
 
-export default connect(mapStateToProps)(ContactData);
+const mapDispatchToProps = dispatch => ({
+  onSubmitOrder: orderData => dispatch(orderActions.purchaseOrder(orderData))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(ContactData, axios));

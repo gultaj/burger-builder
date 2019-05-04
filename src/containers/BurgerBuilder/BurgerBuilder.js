@@ -5,9 +5,9 @@ import Modal from 'components/UI/Modal/Modal';
 import OrderSummary from 'components/OrderSummary/OrderSummary';
 import Spinner from 'components/UI/Spinner/Spinner';
 import withErrorHandler from 'hoc/withErrorHandler/withErrorHandler';
-import axios from 'axios-order';
 import { connect } from 'react-redux';
 import * as burgerActions from 'store/actions/burger';
+import axios from 'axios-order';
 
 class BurgerBuilder extends Component {
   state = {
@@ -16,12 +16,7 @@ class BurgerBuilder extends Component {
     loading: false
   };
   componentDidMount() {
-    // axios
-    //   .get('/ingredients.json')
-    //   .then(res => {
-    //     this.setState({ ingredients: res.data });
-    //   })
-    //   .catch(error => error);
+    this.props.onFetchIngredients();
   }
   componentDidUpdate(prevProps, prevState) {
     if (this.props.ingredients !== prevProps.ingredients) {
@@ -95,7 +90,8 @@ const mapDispatchToProps = dispatch => ({
   onAddIngredient: ingredient =>
     dispatch(burgerActions.addIngredient(ingredient)),
   onRemoveIngredient: ingredient =>
-    dispatch(burgerActions.removeIngredient(ingredient))
+    dispatch(burgerActions.removeIngredient(ingredient)),
+  onFetchIngredients: () => dispatch(burgerActions.fetchIngredients())
 });
 
 export default connect(

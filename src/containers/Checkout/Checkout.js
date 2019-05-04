@@ -3,23 +3,8 @@ import CheckoutSummary from 'components/Order/CheckoutSummary/CheckoutSummary';
 import { Route } from 'react-router-dom';
 import ContactData from 'containers/ContactData/ContactData';
 import { connect } from 'react-redux';
-// import { parse } from 'query-string';
 
 class Checkout extends Component {
-  // state = {
-  //   ingredients: null,
-  //   price: 0
-  // };
-  // componentWillMount() {
-  //   const query = parse(this.props.location.search);
-  //   const ingredients = {};
-  //   for (let key in query) {
-  //     if (key !== 'price') {
-  //       ingredients[key] = query[key];
-  //     }
-  //   }
-  //   this.setState({ ingredients, price: Number(query.price).toFixed(2) });
-  // }
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
   };

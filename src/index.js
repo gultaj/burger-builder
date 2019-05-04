@@ -5,13 +5,14 @@ import App from 'components/App/App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import reducer from 'store/reducers/burger';
 
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   reducer,
-  /* preloadedState, */ composeEnhancers(applyMiddleware())
+  /* preloadedState, */ composeEnhancers(applyMiddleware(thunk))
 );
 /* eslint-enable */
 
