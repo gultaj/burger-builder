@@ -43,6 +43,8 @@ const reducer = (state = initialState, action) => {
           meat: action.payload.meat
         }
       };
+    case actionTypes.CLEAR_INGREDIENTS:
+      return initialState;
     default:
       return state;
   }
