@@ -8,6 +8,7 @@ import config from './formConfig';
 import { connect } from 'react-redux';
 import withErrorHandler from 'hoc/withErrorHandler/withErrorHandler';
 import * as orderActions from 'store/actions/order';
+import checkValidity from 'vlidation/checkValidity';
 
 class ContactData extends Component {
   state = {
@@ -26,20 +27,7 @@ class ContactData extends Component {
     );
     this.setState({ orderForm: form, invalid: invalid });
   }
-  checkValidity = (value, rules) => {
-    if (!(rules instanceof Object)) return;
-    let isInvalid = [];
-    if (Boolean(rules.required)) {
-      isInvalid.push(value.trim() === '');
-    }
-    if (Boolean(rules.minLength)) {
-      isInvalid.push(value.length < rules.minLength);
-    }
-    if (Boolean(rules.maxLength)) {
-      isInvalid.push(value.length > rules.maxLength);
-    }
-    return isInvalid.some(rule => rule);
-  };
+
   orderHandler = event => {
     event.preventDefault();
     const order = {
@@ -53,7 +41,7 @@ class ContactData extends Component {
     const { name, value } = event.target;
     const invalid = { ...this.state.invalid };
     if (Boolean(config[name].validation)) {
-      invalid[name] = this.checkValidity(value, config[name].validation);
+      invalid[name] = checkValidity(value, config[name].validation);
     }
     this.setState({
       orderForm: {
