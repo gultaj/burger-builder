@@ -4,6 +4,10 @@ import Input from 'components/UI/Input/Input';
 import Button from 'components/UI/Button/Button';
 import classes from './Auth.module.css';
 import checkValidity from 'vlidation/checkValidity';
+import withErrorHandler from 'hoc/withErrorHandler/withErrorHandler';
+import axios from 'axios-order';
+import * as authActions from 'store/actions/auth';
+import { connect } from 'react-redux';
 
 class Auth extends Component {
   state = {
@@ -42,6 +46,11 @@ class Auth extends Component {
     });
   };
 
+  handleSubmit = event => {
+    event.preventDefault();
+    this.props.onSubmitAuth(this.state);
+  };
+
   render() {
     const inputs = Object.keys(config).map(key => (
       <Input
@@ -57,7 +66,7 @@ class Auth extends Component {
     ));
     return (
       <div className={classes.Auth}>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           {inputs}
           <Button type="Success" disabled={this.state.isInvalidForm}>
             LOGIN
@@ -68,4 +77,11 @@ class Auth extends Component {
   }
 }
 
-export default Auth;
+const mapDispatchToProps = dispatch => ({
+  onSubmitAuth: authData => dispatch(authActions.auth(authData))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withErrorHandler(Auth, axios));
