@@ -1,14 +1,22 @@
 import * as actionTypes from 'store/actionTypes';
-import axios from 'axios-order';
+import axios from 'axios-auth';
 
-export const auth = authData => dispatch => {
+export const auth = (authData, isSignup) => dispatch => {
+  const data = { ...authData, returnSecureToken: true };
+  const url = isSignup ? '/signupNewUser' : '/verifyPassword';
   dispatch({ type: actionTypes.AUTH_REQUEST });
   axios
-    .post('/', authData)
+    .post(url, data)
     .then(res => {
-      dispatch({ type: actionTypes.AUTH_SUCCESS });
+      dispatch({
+        type: actionTypes.AUTH_SUCCESS,
+        payload: res.data
+      });
     })
     .catch(error => {
-      dispatch({ type: actionTypes.AUTH_FAIL });
+      dispatch({
+        type: actionTypes.AUTH_FAIL,
+        payload: error.message
+      });
     });
 };

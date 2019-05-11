@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import config from './formConfig';
 import Input from 'components/UI/Input/Input';
 import Button from 'components/UI/Button/Button';
+import Spinner from 'components/UI/Spinner/Spinner';
 import classes from './Auth.module.css';
 import checkValidity from 'vlidation/checkValidity';
 import withErrorHandler from 'hoc/withErrorHandler/withErrorHandler';
@@ -13,7 +14,8 @@ class Auth extends Component {
   state = {
     form: null,
     invalid: null,
-    isInvalidForm: true
+    isInvalidForm: true,
+    isSignup: true
   };
 
   componentWillMount() {
@@ -35,8 +37,8 @@ class Auth extends Component {
       invalid[name] = checkValidity(value, config[name].validation);
     }
     this.setState({
-      orderForm: {
-        ...this.state.orderForm,
+      form: {
+        ...this.state.form,
         [name]: value
       },
       isInvalidForm: Object.keys(invalid).some(
@@ -46,9 +48,15 @@ class Auth extends Component {
     });
   };
 
+  handleSwitchForm = () => {
+    this.setState({
+      isSignup: !this.state.isSignup
+    });
+  };
+
   handleSubmit = event => {
     event.preventDefault();
-    this.props.onSubmitAuth(this.state);
+    this.props.onSubmitAuth(this.state.form, this.state.isSignup);
   };
 
   render() {
@@ -66,22 +74,36 @@ class Auth extends Component {
     ));
     return (
       <div className={classes.Auth}>
-        <form onSubmit={this.handleSubmit}>
-          {inputs}
-          <Button type="Success" disabled={this.state.isInvalidForm}>
-            LOGIN
-          </Button>
-        </form>
+        <h2>{this.state.isSignup ? 'Sign Up' : 'Sign In'}</h2>
+        {this.props.loading ? (
+          <Spinner />
+        ) : (
+          <form onSubmit={this.handleSubmit}>
+            {inputs}
+            <Button type="Success" disabled={this.state.isInvalidForm}>
+              {this.state.isSignup ? 'REGISTER' : 'LOGIN'}
+            </Button>
+          </form>
+        )}
+        <Button type="Danger" clicked={this.handleSwitchForm}>
+          SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}
+        </Button>
       </div>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  loading: state.auth.loading,
+  error: state.auth.error
+});
+
 const mapDispatchToProps = dispatch => ({
-  onSubmitAuth: authData => dispatch(authActions.auth(authData))
+  onSubmitAuth: (authData, isSignup) =>
+    dispatch(authActions.auth(authData, isSignup))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withErrorHandler(Auth, axios));
