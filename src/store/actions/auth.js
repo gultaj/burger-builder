@@ -12,6 +12,9 @@ export const auth = (authData, isSignup) => dispatch => {
         type: actionTypes.AUTH_SUCCESS,
         payload: res.data
       });
+      setTimeout(() => {
+        dispatch({ type: actionTypes.AUTH_LOGOUT });
+      }, res.data.expiresIn * 1000);
     })
     .catch(error => {
       dispatch({

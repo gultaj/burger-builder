@@ -8,7 +8,7 @@ import config from './formConfig';
 import { connect } from 'react-redux';
 import withErrorHandler from 'hoc/withErrorHandler/withErrorHandler';
 import * as orderActions from 'store/actions/order';
-import checkValidity from 'vlidation/checkValidity';
+import checkValidity from 'validation/checkValidity';
 
 class ContactData extends Component {
   state = {
