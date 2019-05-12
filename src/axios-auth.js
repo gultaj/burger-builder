@@ -7,6 +7,4 @@ const instance = axios.create({
   }
 });
 
-console.log(process.env.FIREBASE_API_KEY);
-
 export default instance;

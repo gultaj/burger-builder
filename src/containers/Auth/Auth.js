@@ -64,7 +64,7 @@ class Auth extends Component {
       <Input
         element={config[key].element}
         config={config[key].config}
-        value={this.state.form[key].value}
+        value={this.state.form[key]}
         label={config[key].label}
         invalid={this.state.invalid[key]}
         key={key}

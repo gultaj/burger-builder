@@ -5,7 +5,7 @@ import Backdrop from 'components/UI/Backdrop/Backdrop';
 import SideDrawerContext from 'context/SideDrawerContext';
 import classes from './SideDrawer.module.css';
 
-const SideDrawer = () => {
+const SideDrawer = props => {
   const context = React.useContext(SideDrawerContext);
   let attachedClasses = [classes.SideDrawer];
   attachedClasses.push(context.show ? classes.Open : classes.Close);
@@ -17,7 +17,7 @@ const SideDrawer = () => {
           <Logo />
         </div>
         <nav>
-          <NavigationItems />
+          <NavigationItems isAuth={props.isAuth} />
         </nav>
       </div>
     </React.Fragment>
