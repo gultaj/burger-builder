@@ -35,7 +35,7 @@ class ContactData extends Component {
       price: this.props.price,
       orderData: this.state.orderForm
     };
-    this.props.onSubmitOrder(order);
+    this.props.onSubmitOrder(order, this.props.token);
   };
   handleChange = event => {
     const { name, value } = event.target;
@@ -88,11 +88,13 @@ class ContactData extends Component {
 const mapStateToProps = state => ({
   ingredients: state.burger.ingredients,
   price: state.burger.totalPrice,
-  loading: state.order.loading
+  loading: state.order.loading,
+  token: state.auth.token
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSubmitOrder: orderData => dispatch(orderActions.purchaseOrder(orderData))
+  onSubmitOrder: (orderData, token) =>
+    dispatch(orderActions.purchaseOrder(orderData, token))
 });
 
 export default connect(

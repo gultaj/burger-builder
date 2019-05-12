@@ -1,10 +1,10 @@
 import * as actionTypes from 'store/actionTypes';
 import axios from 'axios-order';
 
-export const purchaseOrder = orderData => dispatch => {
+export const purchaseOrder = (orderData, token) => dispatch => {
   dispatch({ type: actionTypes.PURCHASE_ORDER_REQUEST });
   axios
-    .post('/orders.json', orderData)
+    .post('/orders.json?auth=' + token, orderData)
     .then(res => {
       dispatch({
         type: actionTypes.PURCHASE_ORDER_SUCCESS,
@@ -20,10 +20,10 @@ export const purchaseOrder = orderData => dispatch => {
     });
 };
 
-export const fetchOrders = () => dispatch => {
+export const fetchOrders = token => dispatch => {
   dispatch({ type: actionTypes.FETCH_ORDERS_REQUEST });
   axios
-    .get('orders.json')
+    .get('orders.json?auth=' + token)
     .then(res => {
       const orders = Object.keys(res.data).map(key => ({
         ...res.data[key],
