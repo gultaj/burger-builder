@@ -23,3 +23,7 @@ export const auth = (authData, isSignup) => dispatch => {
       });
     });
 };
+
+export const logout = () => dispatch => {
+  dispatch({ type: actionTypes.AUTH_LOGOUT });
+};

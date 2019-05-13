@@ -9,6 +9,7 @@ import withErrorHandler from 'hoc/withErrorHandler/withErrorHandler';
 import axios from 'axios-order';
 import * as authActions from 'store/actions/auth';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 class Auth extends Component {
   state = {
@@ -73,29 +74,33 @@ class Auth extends Component {
       />
     ));
     return (
-      <div className={classes.Auth}>
-        <h2>{this.state.isSignup ? 'Sign Up' : 'Sign In'}</h2>
-        {this.props.loading ? (
-          <Spinner />
-        ) : (
-          <form onSubmit={this.handleSubmit}>
-            {inputs}
-            <Button type="Success" disabled={this.state.isInvalidForm}>
-              {this.state.isSignup ? 'REGISTER' : 'LOGIN'}
-            </Button>
-          </form>
-        )}
-        <Button type="Danger" clicked={this.handleSwitchForm}>
-          SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}
-        </Button>
-      </div>
+      <React.Fragment>
+        {this.props.isAuth && <Redirect to="/" />}
+        <div className={classes.Auth}>
+          <h2>{this.state.isSignup ? 'Sign Up' : 'Sign In'}</h2>
+          {this.props.loading ? (
+            <Spinner />
+          ) : (
+            <form onSubmit={this.handleSubmit}>
+              {inputs}
+              <Button type="Success" disabled={this.state.isInvalidForm}>
+                {this.state.isSignup ? 'REGISTER' : 'LOGIN'}
+              </Button>
+            </form>
+          )}
+          <Button type="Danger" clicked={this.handleSwitchForm}>
+            SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}
+          </Button>
+        </div>
+      </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = state => ({
   loading: state.auth.loading,
-  error: state.auth.error
+  error: state.auth.error,
+  isAuth: state.auth.isAuth
 });
 
 const mapDispatchToProps = dispatch => ({

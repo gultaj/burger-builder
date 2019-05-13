@@ -13,14 +13,17 @@ class Orders extends Component {
   render() {
     return (
       <div>
-        {this.props.loading && <Spinner />}
-        {this.props.orders.map(order => (
-          <Order
-            key={order.id}
-            ingredients={order.ingredients}
-            price={order.price}
-          />
-        ))}
+        {this.props.loading ? (
+          <Spinner />
+        ) : (
+          this.props.orders.map(order => (
+            <Order
+              key={order.id}
+              ingredients={order.ingredients}
+              price={order.price}
+            />
+          ))
+        )}
       </div>
     );
   }

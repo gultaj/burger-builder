@@ -41,7 +41,8 @@ const reducer = (state = initialState, action) => {
           bacon: action.payload.bacon,
           cheese: action.payload.cheese,
           meat: action.payload.meat
-        }
+        },
+        totalPrice: initialState.totalPrice
       };
     case actionTypes.CLEAR_INGREDIENTS:
       return initialState;

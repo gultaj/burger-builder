@@ -22,7 +22,7 @@ const Layout = props => {
 };
 
 const mapStateToProps = state => ({
-  isAuth: state.auth.token !== null
+  isAuth: state.auth.isAuth
 });
 
 export default connect(mapStateToProps)(Layout);
