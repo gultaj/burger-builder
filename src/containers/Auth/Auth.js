@@ -10,6 +10,7 @@ import axios from 'axios-order';
 import * as authActions from 'store/actions/auth';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+var queryString = require('query-string');
 
 class Auth extends Component {
   state = {
@@ -61,6 +62,9 @@ class Auth extends Component {
   };
 
   render() {
+    console.log(this.props);
+    const redirect_to = queryString.parse(this.props.location.search)
+      .redirect_to;
     const inputs = Object.keys(config).map(key => (
       <Input
         element={config[key].element}
@@ -75,7 +79,7 @@ class Auth extends Component {
     ));
     return (
       <React.Fragment>
-        {this.props.isAuth && <Redirect to="/" />}
+        {this.props.isAuth && <Redirect to={redirect_to || '/'} />}
         <div className={classes.Auth}>
           <h2>{this.state.isSignup ? 'Sign Up' : 'Sign In'}</h2>
           {this.props.loading ? (
