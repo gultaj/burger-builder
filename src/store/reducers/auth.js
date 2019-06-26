@@ -20,8 +20,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        token: action.payload.idToken,
-        userId: action.payload.localId,
+        token: action.payload.token,
+        userId: action.payload.userId,
         isAuth: true
       };
     case actionTypes.AUTH_FAIL:

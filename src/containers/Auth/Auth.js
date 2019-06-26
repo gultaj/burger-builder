@@ -62,7 +62,6 @@ class Auth extends Component {
   };
 
   render() {
-    console.log(this.props);
     const redirect_to = queryString.parse(this.props.location.search)
       .redirect_to;
     const inputs = Object.keys(config).map(key => (
