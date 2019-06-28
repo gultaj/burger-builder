@@ -4,7 +4,7 @@ import BuildControls from 'components/BuildControls/BuildControls';
 import Modal from 'components/UI/Modal/Modal';
 import OrderSummary from 'components/OrderSummary/OrderSummary';
 import Spinner from 'components/UI/Spinner/Spinner';
-import withErrorHandler from 'hoc/withErrorHandler/withErrorHandler';
+import withErrorHandler from 'hoc/withErrorHandler';
 import { connect } from 'react-redux';
 import * as burgerActions from 'store/actions/burger';
 import axios from 'axios-order';

@@ -6,7 +6,7 @@ import axios from 'axios-order';
 import Input from 'components/UI/Input/Input';
 import config from './formConfig';
 import { connect } from 'react-redux';
-import withErrorHandler from 'hoc/withErrorHandler/withErrorHandler';
+import withErrorHandler from 'hoc/withErrorHandler';
 import * as orderActions from 'store/actions/order';
 import checkValidity from 'validation/checkValidity';
 

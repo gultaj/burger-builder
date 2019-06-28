@@ -5,7 +5,7 @@ import Button from 'components/UI/Button/Button';
 import Spinner from 'components/UI/Spinner/Spinner';
 import classes from './Auth.module.css';
 import checkValidity from 'validation/checkValidity';
-import withErrorHandler from 'hoc/withErrorHandler/withErrorHandler';
+import withErrorHandler from 'hoc/withErrorHandler';
 import axios from 'axios-order';
 import * as authActions from 'store/actions/auth';
 import { connect } from 'react-redux';
