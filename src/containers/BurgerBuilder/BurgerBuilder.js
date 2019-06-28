@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import * as burgerActions from 'store/actions/burger';
 import axios from 'axios-order';
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   state = {
     purchasable: false,
     isPurchasing: false,

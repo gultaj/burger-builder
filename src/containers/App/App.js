@@ -14,7 +14,7 @@ const AsyncCheckout = asyncComponent(() =>
 const AsyncOrders = asyncComponent(() => import('containers/Orders/Orders'));
 const AsyncAuth = asyncComponent(() => import('containers/Auth/Auth'));
 
-class App extends Component {
+export class App extends Component {
   componentDidMount() {
     this.props.onCheckAuth();
   }
