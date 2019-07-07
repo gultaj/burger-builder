@@ -22,7 +22,7 @@ export const auth = (authData, isSignup) => dispatch => {
         }
       });
       setTimeout(() => {
-        dispatch({ type: actionTypes.AUTH_LOGOUT });
+        dispatch({ type: actionTypes.LOGOUT_REQUEST });
       }, res.data.expiresIn * 1000);
     })
     .catch(error => {
@@ -34,17 +34,17 @@ export const auth = (authData, isSignup) => dispatch => {
 };
 
 export const logout = () => dispatch => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('userId');
-  localStorage.removeItem('expires_in');
-  dispatch({ type: actionTypes.AUTH_LOGOUT });
+  // localStorage.removeItem('token');
+  // localStorage.removeItem('userId');
+  // localStorage.removeItem('expires_in');
+  dispatch({ type: actionTypes.LOGOUT_REQUEST });
 };
 
 export const checkAuthState = () => dispatch => {
   const token = localStorage.getItem('token');
   const expires_in = new Date(+localStorage.getItem('expires_in'));
   if (!token || expires_in <= new Date()) {
-    logout();
+    dispatch(logout());
   } else {
     const userId = localStorage.getItem('userId');
     dispatch({
@@ -55,7 +55,7 @@ export const checkAuthState = () => dispatch => {
       }
     });
     setTimeout(() => {
-      dispatch({ type: actionTypes.AUTH_LOGOUT });
+      dispatch({ type: actionTypes.LOGOUT_REQUEST });
     }, expires_in.getTime() - new Date().getTime());
   }
 };
