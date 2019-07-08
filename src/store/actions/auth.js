@@ -33,7 +33,14 @@ export const auth = (authData, isSignup) => dispatch => {
     });
 };
 
+export const authStart = () => ({ type: actionTypes.AUTH_REQUEST });
+
 export const logout = () => ({ type: actionTypes.LOGOUT_REQUEST });
+
+export const checkTimeout = expiresIn => ({
+  type: actionTypes.AUTH_CHECK_TIMEOUT,
+  expiresIn
+});
 
 export const checkAuthState = () => dispatch => {
   const token = localStorage.getItem('token');

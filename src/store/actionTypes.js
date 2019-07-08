@@ -18,3 +18,5 @@ export const AUTH_FAIL = 'AUTH_FAIL';
 
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+
+export const AUTH_CHECK_TIMEOUT = 'AUTH_CHECK_TIMEOUT';
