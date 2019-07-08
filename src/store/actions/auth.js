@@ -22,7 +22,7 @@ export const auth = (authData, isSignup) => dispatch => {
         }
       });
       setTimeout(() => {
-        dispatch({ type: actionTypes.LOGOUT_REQUEST });
+        dispatch(logout());
       }, res.data.expiresIn * 1000);
     })
     .catch(error => {
@@ -33,12 +33,7 @@ export const auth = (authData, isSignup) => dispatch => {
     });
 };
 
-export const logout = () => dispatch => {
-  // localStorage.removeItem('token');
-  // localStorage.removeItem('userId');
-  // localStorage.removeItem('expires_in');
-  dispatch({ type: actionTypes.LOGOUT_REQUEST });
-};
+export const logout = () => ({ type: actionTypes.LOGOUT_REQUEST });
 
 export const checkAuthState = () => dispatch => {
   const token = localStorage.getItem('token');
@@ -55,7 +50,7 @@ export const checkAuthState = () => dispatch => {
       }
     });
     setTimeout(() => {
-      dispatch({ type: actionTypes.LOGOUT_REQUEST });
+      dispatch(logout());
     }, expires_in.getTime() - new Date().getTime());
   }
 };

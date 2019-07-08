@@ -5,7 +5,7 @@ import burger from 'store/reducers/burger';
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
-import { watchLogout } from 'store/sagas/auth';
+import rootSaga from 'store/sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 /* eslint-disable no-underscore-dangle */
@@ -20,6 +20,6 @@ const store = createStore(
 );
 /* eslint-enable */
 
-sagaMiddleware.run(watchLogout);
+sagaMiddleware.run(rootSaga);
 
 export default store;
