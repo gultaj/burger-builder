@@ -1,63 +1,28 @@
 import * as actionTypes from 'store/actionTypes';
-import axios from 'axios-auth';
 
-export const auth = (authData, isSignup) => dispatch => {
-  const data = { ...authData, returnSecureToken: true };
-  const url = isSignup ? '/signupNewUser' : '/verifyPassword';
-  dispatch({ type: actionTypes.AUTH_REQUEST });
-  axios
-    .post(url, data)
-    .then(res => {
-      localStorage.setItem('token', res.data.idToken);
-      localStorage.setItem('userId', res.data.localId);
-      localStorage.setItem(
-        'expires_in',
-        new Date().getTime() + res.data.expiresIn * 1000
-      );
-      dispatch({
-        type: actionTypes.AUTH_SUCCESS,
-        payload: {
-          token: res.data.idToken,
-          userId: res.data.localId
-        }
-      });
-      setTimeout(() => {
-        dispatch(logout());
-      }, res.data.expiresIn * 1000);
-    })
-    .catch(error => {
-      dispatch({
-        type: actionTypes.AUTH_FAIL,
-        payload: error.message
-      });
-    });
-};
+export const authStart = (authData, isSignup) => ({
+  type: actionTypes.AUTH_REQUEST,
+  authData,
+  isSignup
+});
 
-export const authStart = () => ({ type: actionTypes.AUTH_REQUEST });
+export const authSuccessed = (token, userId) => ({
+  type: actionTypes.AUTH_SUCCESS,
+  payload: { token, userId }
+});
+
+export const authFailed = message => ({
+  type: actionTypes.AUTH_FAIL,
+  payload: message
+});
 
 export const logout = () => ({ type: actionTypes.LOGOUT_REQUEST });
+
+export const logoutSuccess = () => ({ type: actionTypes.LOGOUT_SUCCESS });
 
 export const checkTimeout = expiresIn => ({
   type: actionTypes.AUTH_CHECK_TIMEOUT,
   expiresIn
 });
 
-export const checkAuthState = () => dispatch => {
-  const token = localStorage.getItem('token');
-  const expires_in = new Date(+localStorage.getItem('expires_in'));
-  if (!token || expires_in <= new Date()) {
-    dispatch(logout());
-  } else {
-    const userId = localStorage.getItem('userId');
-    dispatch({
-      type: actionTypes.AUTH_SUCCESS,
-      payload: {
-        token,
-        userId
-      }
-    });
-    setTimeout(() => {
-      dispatch(logout());
-    }, expires_in.getTime() - new Date().getTime());
-  }
-};
+export const checkAuthState = () => ({ type: actionTypes.AUTH_CHECK_STATE });

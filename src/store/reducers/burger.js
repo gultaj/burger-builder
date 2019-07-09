@@ -33,7 +33,7 @@ const reducer = (state = initialState, action) => {
         },
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload]
       };
-    case actionTypes.FETCH_INGREDIENTS:
+    case actionTypes.FETCH_INGREDIENTS_SUCCESS:
       return {
         ...state,
         ingredients: {

@@ -108,7 +108,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onSubmitAuth: (authData, isSignup) =>
-    dispatch(authActions.auth(authData, isSignup))
+    dispatch(authActions.authStart(authData, isSignup))
 });
 
 export default connect(

@@ -1,49 +1,50 @@
-import { delay } from 'redux-saga';
-import { put, takeEvery, takeLeading } from 'redux-saga/effects';
-import * as actionTypes from 'store/actionTypes';
+import { put, delay } from 'redux-saga/effects';
 import * as authActions from 'store/actions/auth';
+import axios from 'axios-auth';
 
-function* logout(action) {
+export function* logout(action) {
   yield localStorage.removeItem('token');
   yield localStorage.removeItem('userId');
   yield localStorage.removeItem('expires_in');
-  yield put({ type: actionTypes.LOGOUT_SUCCESS });
+  yield put(authActions.logoutSuccess());
 }
 
-function* checkAuthTimeoutSaga(action) {
+export function* checkAuthTimeoutSaga(action) {
   yield delay(action.expiresIn * 1000);
   yield put(authActions.logout());
 }
 
-function* authSaga(action) {
+export function* authSaga(action) {
   const data = { ...action.authData, returnSecureToken: true };
   const url = action.isSignup ? '/signupNewUser' : '/verifyPassword';
   try {
-    const res = yield axios.post(url, data);
-    localStorage.setItem('token', res.data.idToken);
-    localStorage.setItem('userId', res.data.localId);
-    localStorage.setItem(
+    const { data: res } = yield axios.post(url, data);
+    yield localStorage.setItem('token', res.idToken);
+    yield localStorage.setItem('userId', res.localId);
+    yield localStorage.setItem(
       'expires_in',
-      new Date().getTime() + res.data.expiresIn * 1000
+      new Date().getTime() + res.expiresIn * 1000
     );
-    put({
-      type: actionTypes.AUTH_SUCCESS,
-      payload: {
-        token: res.data.idToken,
-        userId: res.data.localId
-      }
-    });
-    put(authActions.checkTimeout(res.data.expiresIn));
+    yield put(authActions.authSuccessed(res.idToken, res.localId));
+    yield put(authActions.checkTimeout(res.expiresIn));
   } catch (error) {
-    put({
-      type: actionTypes.AUTH_FAIL,
-      payload: error.message
-    });
+    yield put(authActions.authFailed(error.message));
   }
 }
 
-export function* watchAuth() {
-  yield takeEvery(actionTypes.LOGOUT_REQUEST, logout);
-  yield takeEvery(actionTypes.AUTH_CHECK_TIMEOUT, checkAuthTimeoutSaga);
-  yield takeLeading(actionTypes.AUTH_REQUEST, authSaga);
+export function* checkAuthState(action) {
+  const token = yield localStorage.getItem('token');
+  let expires_in = yield localStorage.getItem('expires_in');
+  expires_in = new Date(+expires_in);
+  if (!token || expires_in <= new Date()) {
+    yield put(authActions.logout());
+  } else {
+    const userId = yield localStorage.getItem('userId');
+    yield put(authActions.authSuccessed(token, userId));
+    yield put(
+      authActions.checkTimeout(
+        (expires_in.getTime() - new Date().getTime()) / 1000
+      )
+    );
+  }
 }
